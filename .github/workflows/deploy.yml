@@ -1,0 +1,31 @@
+name: Run My Data Pipeline
+
+# WHEN does this run? Every time you push code to main
+on:
+  push:
+    branches: [main]
+
+# WHAT does it do? Run your Python script
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Download your code from GitHub
+      - uses: actions/checkout@v4
+
+      # Step 2: Install Python
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Step 3: Install the libraries your script needs
+      - name: Install dependencies
+        run: pip install pandas boto3
+
+      # Step 4: Run your script!
+      - name: Run data pipeline
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+        run: python pipeline.py
