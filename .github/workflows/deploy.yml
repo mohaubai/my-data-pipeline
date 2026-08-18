@@ -5,6 +5,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 # WHAT does it do? Run your Python script
 jobs:
   run-pipeline:
@@ -20,7 +23,7 @@ jobs:
 
       # Step 3: Install the libraries your script needs
       - name: Install dependencies
-        run: pip install pandas boto3
+        run: pip install -r requirements.txt
 
       # Step 4: Run your script!
       - name: Run data pipeline
